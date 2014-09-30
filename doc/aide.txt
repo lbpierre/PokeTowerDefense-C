@@ -1,0 +1,112 @@
+/* __________ Projet Pokimac2015 Tower défense BLONDEAU et VILLEDIEU __________*/
+
+
+____COMPILATION DU JEU ____
+
+	Avant de jouer l'application doit être compilée, pour cela dans le terminal, ce déplacer dans le dossier du projet avec la commance "cd", puis faire un "make".
+
+La commande "make clean" permet de supprimer tous les fichier de compilation (.o et fichier executable).
+La commande "make tar" permet de faire un make clean et de faire un fichier .tar du dossier projet.
+
+____ LANCEMENT DU JEU ____
+
+	Le lancement du jeu ce fait en tapant bin/itd à la source du dossier PokimacTowerDefense, une fois l'exécutable lancé veuillez rentrer le nom de votre fichier de configuration au format .itd, par défaut trois map sont disponibles, map1.itd, map2.itd, et map3.itd.
+
+____ REGLES DU JEU ____
+
+	Vous disposez d'une certaine somme d'argent avec laquelle vous avez la possibilité de construire des tours. 
+Celles-ci vous permettront de tirer sur les monstres pokémons qui envahissent votre terrain. Le but du jeu est donc d'éliminer tous ces monstres et de les empêcher d'atteindre la sortie.
+Vous pouvez augmenter la puissance de vos tours afin de pouvoir augmenter leurs capacités, ceci vous couteras un nombre déterminé de coins.
+La portée de vos tours est représenté par le cercle blanc qui s'affiche lors du glissé déposé. Attention, veillez à construire vos bâtiments à portée des chemins et sur des zones constructibles représentés en gris sur la carte.
+
+Soyez vigilant aujourd'hui un grand nombre de pokémons et de maitres déambulent dans les rues, 20 vagues d'une dizaine de monstres sont attendues.
+
+À chaque vague les monstres voient leurs vie augmenté, et l'argent remporté lorsqu'un monstre est tué augmente de façon croissante suivant le niveau des monstres.
+
+	---- Les tours : ----
+
+~~ Les tours : ~~
+
+•	La tour pokeball violette ou de type « rocket » :
+
+Puissance : 700
+Portée : 200px
+Cadence : 0.9s
+Cout : 15
+temps construction : 2s
+
+La tour rouge tire seulement sur un monstre à la fois, le premier à sa portée. Elle enlève 700 points de vie au monstre touché.
+
+•	La tour pokeball jaune ou de type « laser » :
+
+Puissance : 100
+Portée : 80
+Cadence : 0.1s
+Cout : 20
+temps de construction : 10s
+
+La tour jaune tire seulement sur un monstre à la fois, le premier à sa portée. Elle enlève 100 points de vie au monstre touché.
+
+•	La tour pokeball bleu ou de type « mitraillette » :
+
+Puissance : 70
+Portée : 100
+Cadence : 0.2s
+Cout : 30
+temps de construction : 1s
+
+La tour bleu tire sur tous les monstres à sa portée. Elle enlève 70 points de vie au monstre touché.
+
+
+•	La tour pokeball rouge ou de type « hybride » :
+
+Puissance : 200
+Portée : 200
+Cadence : 0.5s
+Cout : 10
+temps de construction : 2s
+
+La tour rouge tire seulement sur un monstre à la fois, le premier à sa portée. Elle enlève 200 points de vie au monstre touché.
+
+	---- Les monstres : ---- 
+
+•	Les vagues de monstre :
+
+Chaque vague voit ça vie augmenter de 10 000, à chaque nouvelle vague.
+La première vague avance à 5 pixel par seconde
+Ensuite les autres avances à 10 pixel par seconde
+( Nous avons choisit de faire ceci car la vitesse max imposée par l'énoncé est 10 pixel par seconde, donc il est préférable pour le déroulement du jeux qu'ils avancent à leurs vitesses max car celle ci n'est déjà pas bien élevée.)
+
+Vague 5 : la résistance est 50% sur les tours de type rocket.
+Vague 10 : la résistance est 50% sur les tours de type laser.
+Vague 15 : la résistance est 70% sur les tours de type laser, et 50% pour les tours mitraillette.
+Vague 20 : la résistance est 30% sur les tours de type laser, et 50% pour les mitraillettes, et 50% pour les hybrides.
+
+
+____ CONSTRUIRE UNE TOUR ____
+
+	Afin de déposer un batiment sur la carte, cliquer sur la tour que vous souhaitez ajouter dans le menu en haut à droite, la tour s'accroche ensuite à votre curseur. Enfin déposer la tour sur la carte pour construire la pokeball désirée.
+(ou consultez les raccourcis clavier grâce à la touche H)
+
+____ VENDRE UNE TOUR ____
+
+	On sélectionne une tour puis soit nous cliquons directement sur la touche "s", soit nous nous rendons en haut à droite et nous cliquons sur le bouton vendre qui apparait en dessous de la description.
+
+____ VISUALISER UN ELEMENT ____
+
+	Afin de connaitre les caractéristiques liés à une une tour du jeu cliquez sur la tour la description s'affichera en haut à droite.
+
+____ RACCOURCIS CLAVIER ____
+
+Q / ESC : quitter
+H : Afficher l'aide
+P : Pause
+A : Tour rocket
+Z : Tour laser
+E : Tour mitraillette
+R : Tour hybride
+T : Affiche le chemin, ainsi que le rayon des zones constructibles (cercle blanc) , et le rayon autour d'une tour ou nous ne pouvons pas construire (noir), et les noeuds IN (vert) et OUT (rouge)
+U : Évolution d'une tour
+S : Vente d'une tour
+
+DEVIENDREZ VOUS LE MEILLEUR DRESSEUR ?
