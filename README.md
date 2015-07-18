@@ -4,7 +4,7 @@ C/OpenGL programming Pokimac tower defense for mac os x
 ![Screenshots of the game](http://s24.postimg.org/4h1r6hg39/example.jpg)
 
 
-I realised this project during my first master of science in engineering school year. This project is written in C and using **OpenGL**, **GLUT** and **SDL libraries**. We used complementary libraries to expand our project : **SDL_image** (for image management), **SDL_ttf** (for text management) and **SDL_mixer** (for sound management). At start-up of the application requests the file name .itd describing the game path and card, and allowing you to use the right background image ("bottom Card"), and the right path (point connections nodes and colors), and the color of buildable areas.
+I realised this project during my first year of master of science in engineering with **[Maxime Blondeau](http://maximeblondeau.com/)**. This project is written in C and using **OpenGL**, **GLUT** and **SDL libraries**. We used complementary libraries to expand our project : **SDL_image** (for image management), **SDL_ttf** (for text management) and **SDL_mixer** (for sound management). At start-up of the application requests the file name .itd describing the game path and card, and allowing you to use the right background image ("bottom Card"), and the right path (point connections nodes and colors), and the color of buildable areas.
 
 ----------
 
@@ -151,4 +151,27 @@ You start the game by typing bin/itd the source of PokimacTowerDefense folder, o
  -    **U :** Upgrade the tower
  -    **S :** Sell a tower
 
-###Structures diagrams
+###How the maps are working
+
+![map draw](http://s1.postimg.org/lahvoq5rh/Screenshot_2015_07_18_20_00_05.png)
+
+
+An example of a mapfile that I created using pokemon sprites with drawable zones in pink :
+
+![enter image description here](http://s17.postimg.org/bjjtc3gkt/map2.jpg)
+
+###Characters movement
+
+![mouvement du perso](http://s1.postimg.org/u446s33ce/Screenshot_2015_07_18_20_00_13.jpg)
+
+###Sprites
+
+We used pokemon sprites matrix for the game that we texturised on a OpenGL 2d rect shape.
+
+![Sprites](http://s4.postimg.org/ndxbu3gul/pikachu.png)
+
+###For more information
+
+If you need some more information or if you've got any question regarding the game feel free to contact me and to read the pdf file explaining exactly the work that we've done, unfortunately this document is in french but it's composed by some good images explaining the way we build this game.
+
+Thanks, hope you'll enjoy it. 
