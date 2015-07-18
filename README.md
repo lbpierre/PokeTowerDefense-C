@@ -124,7 +124,7 @@ How to start the game
 
 You start the game by typing bin/itd the source of PokimacTowerDefense folder, once the executable launched please enter the name of your configuration file .itd format, three default map are available, map1.itd, map2 .itd and map3.itd.
 
-```
+```sh
  cd /FOLDER
  sudo cp -r libs/* /Library/Frameworks/
  make clean
@@ -174,4 +174,4 @@ We used pokemon sprites matrix for the game that we texturised on a OpenGL 2d re
 
 If you need some more information or if you've got any question regarding the game feel free to contact me and to read the pdf file explaining exactly the work that we've done, unfortunately this document is in french but it's composed by some good images explaining the way we build this game.
 
-Thanks, hope you'll enjoy it. 
+Thanks, hope you'll enjoy it.
