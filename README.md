@@ -1,7 +1,10 @@
-C Pokimac tower defense
+C/OpenGL programming Pokimac tower defense for mac os x
 ===================
 
-I realised this project during my first master of science in engineering year. This project is written in C and using **OpenGL**, **GLUT** and **SDL libraries**. We used complementary libraries to expand our project : **SDL_image** (for image management), **SDL_ttf** (for text management) and **SDL_mixer** (for sound management). At start-up of the application requests the file name .itd describing the game path and card, and allowing you to use the right background image ("bottom Card"), and the right path (point connections nodes and colors), and the color of buildable areas.
+![Screenshots of the game](http://s24.postimg.org/4h1r6hg39/example.jpg)
+
+
+I realised this project during my first master of science in engineering school year. This project is written in C and using **OpenGL**, **GLUT** and **SDL libraries**. We used complementary libraries to expand our project : **SDL_image** (for image management), **SDL_ttf** (for text management) and **SDL_mixer** (for sound management). At start-up of the application requests the file name .itd describing the game path and card, and allowing you to use the right background image ("bottom Card"), and the right path (point connections nodes and colors), and the color of buildable areas.
 
 ----------
 
@@ -13,22 +16,122 @@ The Tower Defense is a strategy game style, the main goal is to prevent the pass
 ----------
 
 
-Folder structure
+Files structure
 -------------------
 
-
+```
+.
+├── Makefile
+├── README.md
+├── SDLMain.h
+├── SDLMain.m
+├── bin
+│   └── itd
+├── data
+│   ├── map1.itd
+│   ├── map2.itd
+│   └── map3.itd
+├── doc
+│   └── aide.txt
+├── images
+│   ├── Acme.ttf
+│   ├── Fipps.ttf
+│   ├── HARABARA.TTF
+│   ├── hoog0656.ttf
+│   ├── map.jpg
+│   ├── map2.jpg
+│   ├── map3.jpg
+│   ├── monsters
+│   │   ├── autreFille.png
+│   │   ├── autreMec.png
+│   │   ├── autreMec2.png
+│   │   ├── autreSprite.png
+│   │   ├── eau.png
+│   │   ├── fille2.png
+│   │   ├── pikachu.png
+│   │   ├── pokemon.png
+│   │   └── pokemonMechant.png
+│   ├── scenario
+│   │   ├── AIDE.png
+│   │   ├── barmenu.png
+│   │   ├── hand_cursor2.png
+│   │   ├── pause.png
+│   │   ├── start.jpg
+│   │   ├── youloose.png
+│   │   └── youwin.png
+│   └── towers
+│       └── pokeballs.png
+├── include
+│   ├── carte.h
+│   ├── chemin.h
+│   ├── map.h
+│   ├── menu.h
+│   ├── monster.h
+│   ├── node.h
+│   ├── sdl.h
+│   ├── texte.h
+│   ├── texture.h
+│   ├── tower.h
+│   └── vague.h
+├── libs
+│   ├── SDL.framework
+│   ├── SDL_image.framework
+│   ├── SDL_mixer.framework
+│   └── SDL_ttf.framework
+├── morganVilledieu&maximeBlondeau.pdf
+├── obj
+│   ├── carte.o
+│   ├── chemin.o
+│   ├── main.o
+│   ├── map.o
+│   ├── menu.o
+│   ├── monster.o
+│   ├── node.o
+│   ├── sdl.o
+│   ├── texte.o
+│   ├── texture.o
+│   ├── tower.o
+│   └── vague.o
+├── son
+│   ├── LevelUp.ogg
+│   ├── Notification.ogg
+│   ├── Opening.mid
+│   ├── PP\ Zero.ogg
+│   ├── Warp.ogg
+│   ├── WarpQuit.ogg
+│   ├── defaite.mid
+│   ├── magic100.ogg
+│   └── pokerock.mid
+└── src
+    ├── carte.c
+    ├── chemin.c
+    ├── main.c
+    ├── map.c
+    ├── menu.c
+    ├── monster.c
+    ├── node.c
+    ├── sdl.c
+    ├── texte.c
+    ├── texture.c
+    ├── tower.c
+    └── vague.c
+```
 ----------
 
 
 How to start the game
 -------------
 
-You start the game by typing bin / itd the source of PokimacTowerDefense folder, once the executable launched please enter the name of your configuration file .itd format, three default map are available, map1.itd, map2 .itd and map3.itd.
+You start the game by typing bin/itd the source of PokimacTowerDefense folder, once the executable launched please enter the name of your configuration file .itd format, three default map are available, map1.itd, map2 .itd and map3.itd.
 
 ```
  cd /FOLDER
- make clean make
- ./nameofyourexecutable
+ sudo cp -r libs/* /Library/Frameworks/
+ make clean
+ make
+ bin/itd (to start the program)
+
+ -- then write the name of the mapfile
 ```
 
 ----------
@@ -36,15 +139,16 @@ You start the game by typing bin / itd the source of PokimacTowerDefense folder,
 
 ### Keyboard shortcuts
 
-> **Q / ESC** : Quit
-**H :** Help
-**P :** Pause
-**A :** Tour rocket
-**Z :** Tour laser
-**E :** Tour mitraillette
-**R :** Tour hybride
-**T :** Displays the path and the ray of building areas (white circle), and the radius around a tower where we cannot build anything (black), and IN nodes (green) and OUT (red)
-**U :** Upgrade the tower
-**S :** Sell a tower
+ - **Q / ESC** : Quit
+ -  **H :** Help
+ -   **P :** Pause
+ -   **A :** Tour rocket
+ -    **Z :** Tour laser
+ -    **E :** Tour mitraillette
+ -    **R :** Tour hybride
+ -    **T :** Displays the path and the ray of building areas (white circle), and the radius around a tower where we cannot build anything
+   (black), and IN nodes (green) and OUT (red)
+ -    **U :** Upgrade the tower
+ -    **S :** Sell a tower
 
 ###Structures diagrams
