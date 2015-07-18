@@ -6,14 +6,14 @@ C/OpenGL programming Pokimac tower defense for mac os x
 
 I realised this project during my first year of master of science in engineering with **[Maxime Blondeau](http://maximeblondeau.com/)**. This project is written in C and using **OpenGL**, **GLUT** and **SDL libraries**. We used complementary libraries to expand our project : **SDL_image** (for image management), **SDL_ttf** (for text management) and **SDL_mixer** (for sound management). At start-up of the application requests the file name .itd describing the game path and card, and allowing you to use the right background image ("bottom Card"), and the right path (point connections nodes and colors), and the color of buildable areas.
 
-----------
+
 
 The game
 -------------
 
 The Tower Defense is a strategy game style, the main goal is to prevent the passage of creatures from a starting area to a finish area by creating towers defence that eliminate the creatures in their progression before they get in the zone. The waves are generally more and more difficult and the player need to find the right strategy to rich the higher level.
 
-----------
+
 
 
 Files structure
@@ -116,7 +116,7 @@ Files structure
     ├── tower.c
     └── vague.c
 ```
-----------
+
 
 
 How to start the game
@@ -134,7 +134,6 @@ You start the game by typing bin/itd the source of PokimacTowerDefense folder, o
  -- then write the name of the mapfile
 ```
 
-----------
 
 
 ### Keyboard shortcuts
