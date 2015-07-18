@@ -4,11 +4,11 @@
 #include <stdio.h>
 
 #include <SDL/SDL.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_mixer.h>
-#include <SDL/SDL_ttf.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <SDL_image/SDL_image.h>
+#include <SDL_mixer/SDL_mixer.h>
+#include <SDL_ttf/SDL_ttf.h>
 
 #include "map.h"
 
@@ -25,7 +25,7 @@ void DessinMap(void) {
     //map
     glLoadIdentity();
     glClearColor (0.0, 0.0, 0.0, 0.0);
-    
+
     glEnable(GL_TEXTURE_2D);
     glColor3ub(255, 255, 255);
     glBindTexture(GL_TEXTURE_2D, 1);

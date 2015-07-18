@@ -5,11 +5,11 @@
 
 #include <math.h>
 #include <SDL/SDL.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_mixer.h>
-#include <SDL/SDL_ttf.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <SDL_image/SDL_image.h>
+#include <SDL_mixer/SDL_mixer.h>
+#include <SDL_ttf/SDL_ttf.h>
 
 #include "monster.h"
 #include "tower.h"
@@ -22,7 +22,7 @@
  SDL_Surface *surface : la surface sur laquelle on va récupérer la couleur d'un pixel
  int x : la coordonnée en x du pixel à récupérer
  int y : la coordonnée en y du pixel à récupérer
- 
+
  Uint32 resultat : la fonction renvoie le pixel aux coordonnées (x,y) dans la surface
  */
 Uint32 obtenirPixel(SDL_Surface *surface, int x, int y)
@@ -34,29 +34,29 @@ Uint32 obtenirPixel(SDL_Surface *surface, int x, int y)
     /* Ici p est l'adresse du pixel que l'on veut connaitre */
     /*surface->pixels contient l'adresse du premier pixel de l'image*/
     Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * nbOctetsParPixel;
-    
+
     /*Gestion différente suivant le nombre d'octets par pixel de l'image*/
     switch(nbOctetsParPixel)
     {
         case 1:
             return *p;
-            
+
         case 2:
             return *(Uint16 *)p;
-            
+
         case 3:
             /*Suivant l'architecture de la machine*/
             if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
                 return p[0] << 16 | p[1] << 8 | p[2];
             else
                 return p[0] | p[1] << 8 | p[2] << 16;
-            
+
         case 4:
             return *(Uint32 *)p;
-            
+
             /*Ne devrait pas arriver, mais évite les erreurs*/
         default:
-            return 0; 
+            return 0;
     }
 }
 
@@ -77,18 +77,18 @@ void definirPixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
     /*Ici p est l'adresse du pixel que l'on veut modifier*/
     /*surface->pixels contient l'adresse du premier pixel de l'image*/
     Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * nbOctetsParPixel;
-    
+
     /*Gestion différente suivant le nombre d'octets par pixel de l'image*/
     switch(nbOctetsParPixel)
     {
         case 1:
             *p = pixel;
             break;
-            
+
         case 2:
             *(Uint16 *)p = pixel;
             break;
-            
+
         case 3:
             /*Suivant l'architecture de la machine*/
             if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
@@ -104,7 +104,7 @@ void definirPixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
                 p[2] = (pixel >> 16) & 0xff;
             }
             break;
-            
+
         case 4:
             *(Uint32 *)p = pixel;
             break;
@@ -116,10 +116,10 @@ void definirPixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 ////////////////
 
 GLuint* texture(int **tab, char** nomFichierImage){
-    
+
     //map
     GLuint *textureId;
-    textureId = malloc(50*sizeof(GLuint));
+    textureId = (GLuint*)(malloc(50*sizeof(GLuint)));
     GLenum format;
     //Concerne le chargement de texture.
     glGenTextures(30, textureId);
@@ -134,12 +134,12 @@ GLuint* texture(int **tab, char** nomFichierImage){
 	else{
 	    printf("ca marche bien\n");
 	}
-    
-    
+
+
     glBindTexture(GL_TEXTURE_2D, textureId[0]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	Uint8 nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -157,18 +157,18 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     /////////////////////////////
     ////Gestion re-mapping///////
     ////////////////////////////
-    
+
     Uint32 pixel;
     Uint8 r,g,b,a;
     int x,y;
     int ecartType = 50;
     int valConstr = 1;
     int valNonConstr = 0;
-    
+
     SDL_LockSurface(image); /*On bloque la surface*/
     for (y=0;y<730;y++)
     {
@@ -176,24 +176,24 @@ GLuint* texture(int **tab, char** nomFichierImage){
         {
             pixel = obtenirPixel(image,x,y);
             SDL_GetRGBA(pixel, image->format, &r, &g, &b, &a);
-            
+
             /*Ici, on mettra du code pour modifier les composantes du pixel.*/
             if(r >= 255-ecartType && g <= 0+ecartType && b>=255-ecartType){
                 //printf("couleur r : %d g : %d b : %d et %d\n",r, g, b, a);
                 //printf("couleur X : %d Y : %d\n", x, y);
                 //On place la valeur qui définit s'il est possible de construire ou non.
                 tab[y][x] = valConstr;
-                
+
                 //valeurs remapping
                 r = 184;
                 g = 200;
                 b = 224;
                 a = 255;
-                
+
                 /*Et une fois qu'on les a modifiés :*/
                 pixel = SDL_MapRGBA(image->format, r, g, b, a);
                 //printf("couleur r : %d g : %d b : %d et %d\n",r, g, b, a);
-                
+
             }else{
                 //On place la valeur qui définit qu'il est impossible de construire.
                 tab[y][x] = valNonConstr;
@@ -203,7 +203,7 @@ GLuint* texture(int **tab, char** nomFichierImage){
         }
     }
     SDL_UnlockSurface(image); /*On libère la surface, elle peut être utilisée*/
-    
+
     /*
      for (y=0;y<image->h;y++)
      {
@@ -214,11 +214,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
      }
      }
     */
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, format,GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
-    
+
     //perso
     char *Filename2 = "images/monsters/pokemon.png";
     // chargement image
@@ -229,11 +229,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
 	else{
 	    printf("ca marche bien\n");
 	}
-    
+
     glBindTexture(GL_TEXTURE_2D, textureId[1]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -251,11 +251,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
-    
+
     //menu
     char *Filename3 = "images/scenario/barmenu.png";
     // chargement image
@@ -266,11 +266,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
 	else{
 	    printf("ca marche bien\n");
 	}
-    
+
     glBindTexture(GL_TEXTURE_2D, textureId[2]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -288,11 +288,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
-    
+
     //tower
     char *Filename4 = "images/towers/pokeballs.png";
     // chargement image
@@ -303,11 +303,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
 	else{
 	    printf("ca marche bien\n");
 	}
-    
+
     glBindTexture(GL_TEXTURE_2D, textureId[3]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -325,12 +325,12 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
-    
-    //img start 
+
+    //img start
     char *Filename5 = "images/scenario/start.jpg";
     // chargement image
     image=IMG_Load(Filename5);
@@ -340,11 +340,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
 	else{
 	    printf("start\n");
 	}
-    
+
     glBindTexture(GL_TEXTURE_2D, textureId[4]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -362,11 +362,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
-    
+
     //img pause
     char *Filename6 = "images/scenario/pause.png";
     // chargement image
@@ -377,11 +377,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
 	else{
 	    printf("start\n");
 	}
-    
+
     glBindTexture(GL_TEXTURE_2D, textureId[5]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -399,11 +399,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
-    
+
     //img Win
     char *Filename7 = "images/scenario/youwin.png";
     // chargement image
@@ -414,11 +414,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
 	else{
 	    printf("start\n");
 	}
-    
+
     glBindTexture(GL_TEXTURE_2D, textureId[6]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -436,11 +436,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
-    
+
     //img Lose
     char *Filename8 = "images/scenario/youloose.png";
     // chargement image
@@ -451,11 +451,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
 	else{
 	    printf("start\n");
 	}
-    
+
     glBindTexture(GL_TEXTURE_2D, textureId[7]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -473,7 +473,7 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
@@ -491,7 +491,7 @@ GLuint* texture(int **tab, char** nomFichierImage){
     glBindTexture(GL_TEXTURE_2D, textureId[8]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -509,11 +509,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
-    
+
     //img HELP
     char *Filename10 = "images/scenario/AIDE.png";
     // chargement image
@@ -527,7 +527,7 @@ GLuint* texture(int **tab, char** nomFichierImage){
     glBindTexture(GL_TEXTURE_2D, textureId[9]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -545,7 +545,7 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
@@ -563,7 +563,7 @@ GLuint* texture(int **tab, char** nomFichierImage){
     glBindTexture(GL_TEXTURE_2D, textureId[11]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -581,11 +581,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
-    
+
     //img mechant 2
     char *Filename12 = "images/monsters/autreSprite.png";
     // chargement image
@@ -599,7 +599,7 @@ GLuint* texture(int **tab, char** nomFichierImage){
     glBindTexture(GL_TEXTURE_2D, textureId[12]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -617,11 +617,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
-    
+
     //img mechant 3
     char *Filename13 = "images/monsters/autreMec.png";
     // chargement image
@@ -635,7 +635,7 @@ GLuint* texture(int **tab, char** nomFichierImage){
     glBindTexture(GL_TEXTURE_2D, textureId[13]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -653,11 +653,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
-    
+
     //img mechant 3
     char *Filename14 = "images/monsters/autreFille.png";
     // chargement image
@@ -671,7 +671,7 @@ GLuint* texture(int **tab, char** nomFichierImage){
     glBindTexture(GL_TEXTURE_2D, textureId[14]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -689,11 +689,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
-    
+
     //img mechant 5
     char *Filename15 = "images/monsters/autreMec2.png";
     // chargement image
@@ -707,7 +707,7 @@ GLuint* texture(int **tab, char** nomFichierImage){
     glBindTexture(GL_TEXTURE_2D, textureId[15]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -725,11 +725,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
-    
+
     //img mechant 3
     char *Filename16 = "images/monsters/pikachu.png";
     // chargement image
@@ -743,7 +743,7 @@ GLuint* texture(int **tab, char** nomFichierImage){
     glBindTexture(GL_TEXTURE_2D, textureId[16]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -761,11 +761,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
-    
+
     //img mechant 3
     char *Filename17 = "images/monsters/eau.png";
     // chargement image
@@ -779,7 +779,7 @@ GLuint* texture(int **tab, char** nomFichierImage){
     glBindTexture(GL_TEXTURE_2D, textureId[17]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -797,11 +797,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
-    
+
     //img mechant 3
     char *Filename18 = "images/monsters/fille2.png";
     // chargement image
@@ -815,7 +815,7 @@ GLuint* texture(int **tab, char** nomFichierImage){
     glBindTexture(GL_TEXTURE_2D, textureId[18]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
 	nOfColors = image->format->BytesPerPixel;
 	if (nOfColors == 4)     // contains an alpha channel
 	{
@@ -833,11 +833,11 @@ GLuint* texture(int **tab, char** nomFichierImage){
         printf("warning: the image is not truecolor..  this will probably break\n");
         // this error should not go unhandled
 	}
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(image);
-    
+
     return textureId;
-    
+
 }

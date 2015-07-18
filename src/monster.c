@@ -5,11 +5,11 @@
 
 #include <math.h>
 #include <SDL/SDL.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_mixer.h>
-#include <SDL/SDL_ttf.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <SDL_image/SDL_image.h>
+#include <SDL_mixer/SDL_mixer.h>
+#include <SDL_ttf/SDL_ttf.h>
 
 #include "vague.h"
 #include "node.h"
@@ -22,11 +22,11 @@
 ////////////////
 
 /*--------------------------------------------------------------
-                AJOUTE UN MONSTRE   
+                AJOUTE UN MONSTRE
  --------------------------------------------------------------*/
 
 l_monster ajouterMonster(l_monster liste, l_node listeNode, int idMonster, int vie, int typeMonster, float resistTower1,float resistTower2,float resistTower3,float resistTower4){
-    monster* nouvelElement = malloc(sizeof(monster));
+    monster* nouvelElement = (monster*)(malloc(sizeof(monster)));
     if(nouvelElement == NULL){
         fprintf(stderr, "Erreur allocation : MONSTER\n");
         exit(EXIT_FAILURE);
@@ -67,7 +67,7 @@ l_monster supprimerMonster(l_monster liste, int idMonster){
     /* Liste vide, il n'y a plus rien à supprimer */
     if(liste == NULL)
         return NULL;
-    
+
     /* Si l'élément en cours de traitement doit être supprimé */
     if(liste->idMonster == idMonster)
     {
@@ -133,7 +133,7 @@ void deplaceMonster (l_monster liste, float timeVague, int vague, char** message
             vitesse = 0;
         }
     }
-    
+
     while (liste!=NULL) {
         //permet de evoyer les monster 1 a 1, monster avec idMonster==1 demarre a la premiere seconde...
         if(liste->next == NULL || fabs(liste->next->x-liste->x)>50 || fabs(liste->next->y-liste->y)>50){
@@ -154,13 +154,13 @@ void deplaceMonster (l_monster liste, float timeVague, int vague, char** message
                 }
             }
             // gestion des deplacements, haut, bas, gauche, droite
-            
-            
+
+
             //gauche a droite
             if((liste->dest->x)-(liste->x)>0){
                 liste->x=(liste->x+vitesse);
                 float penteOldDestDest = ((float)((liste->dest->y)-(liste->oldDest->y))/(float)((liste->dest->x)-(liste->oldDest->x)));
-                
+
                 if(penteOldDestDest > 1 || penteOldDestDest < -1){
                     //bas en haut
                     if((liste->dest->y)-(liste->y)>0){
@@ -184,14 +184,14 @@ void deplaceMonster (l_monster liste, float timeVague, int vague, char** message
                     liste->y=(liste->oldDest->y)+((float)((liste->x)-(liste->oldDest->x))*penteOldDestDest);
                     liste->direction = 3;
                 }
-                
-                
+
+
             }
             //droite a gauche
             if((liste->dest->x)-(liste->x)<0){
                 liste->x=(liste->x-vitesse);
                 float penteOldDestDest = ((float)((liste->oldDest->y)-(liste->dest->y))/(float)((liste->oldDest->x)-(liste->dest->x)));
-                
+
                 if(penteOldDestDest > 1 || penteOldDestDest < -1){
                     //bas en haut
                     if((liste->dest->y)-(liste->y)>0){
@@ -226,7 +226,7 @@ void deplaceMonster (l_monster liste, float timeVague, int vague, char** message
                 liste->y=(liste->y-vitesse);
                 liste->direction = 1;
             }
-             
+
         }
         liste=liste->next;
     }
@@ -295,26 +295,26 @@ void AfficherMonster (l_monster liste, int vague, int * bouge){
             	    DessinMonstre(liste, vague, mouv);
             	}
             }
-            
-            
-            
-            
+
+
+
+
         }
-        
+
         liste=liste->next;
     }
     glDisable(GL_TEXTURE_2D);
 }
 
 /*--------------------------------------------------------------
-                    GESTION DES SPRITES 
+                    GESTION DES SPRITES
  --------------------------------------------------------------*/
 
 void DessinMonstre(l_monster liste, int vague, int mouv){
     glLoadIdentity();
     glTranslatef(liste->x,liste->y,1);
     glColor3ub(255, 255, 255);
-    
+
     glBegin(GL_QUADS);
     //HAUT GAUCHE
     glTexCoord2f(0.25+mouv*0.25, 0.25*(liste->direction-1));      glVertex2f(20,20);
@@ -325,9 +325,9 @@ void DessinMonstre(l_monster liste, int vague, int mouv){
     //BAS DROIT
     glTexCoord2f(0.25+mouv*0.25, 0.25+0.25*(liste->direction-1));      glVertex2f(20, -20);
     glEnd();
-    
+
     glBindTexture(GL_TEXTURE_2D, 0);
-    
+
     //vie = vague*10000
     glColor3ub(50, 255, 20);
     glBegin(GL_QUADS);
@@ -336,7 +336,7 @@ void DessinMonstre(l_monster liste, int vague, int mouv){
     glVertex2f(-20,-20);
     glVertex2f((liste->vie)*40/(vague*10000)-20,-20);
     glEnd();
-    
+
     glColor3ub(230, 50, 20);
     glBegin(GL_QUADS);
     glVertex2f(20,-25);
@@ -344,6 +344,6 @@ void DessinMonstre(l_monster liste, int vague, int mouv){
     glVertex2f((liste->vie)*40/(vague*10000)-20,-20);
     glVertex2f(20,-20);
     glEnd();
-    
+
     glLoadIdentity();
 }

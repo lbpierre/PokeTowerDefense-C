@@ -5,11 +5,11 @@
 
 #include <math.h>
 #include <SDL/SDL.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_mixer.h>
-#include <SDL/SDL_ttf.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <SDL_image/SDL_image.h>
+#include <SDL_mixer/SDL_mixer.h>
+#include <SDL_ttf/SDL_ttf.h>
 
 #include "monster.h"
 #include "tower.h"
@@ -29,17 +29,17 @@ l_tower ajouterTower(l_tower liste, int* coins, int x, int y,int type, char** me
     float cadence;
     int cost;
     float timeConst;
-    
+
     //Le son de la construction d'une tower
     Mix_Chunk *towerSound;
     towerSound = Mix_LoadWAV("son/Notification.ogg");
     Mix_VolumeChunk(towerSound, MIX_MAX_VOLUME/2);
-    
+
     //Le son d'une erreur lors de la construction
     Mix_Chunk *errorTowerSound;
     errorTowerSound = Mix_LoadWAV("son/PP Zero.ogg");
     Mix_VolumeChunk(errorTowerSound, MIX_MAX_VOLUME/2);
-    
+
     //en fonction du type de tower
     switch(type) {
         case 1: //rocket
@@ -74,9 +74,9 @@ l_tower ajouterTower(l_tower liste, int* coins, int x, int y,int type, char** me
             break;
     }
 
-    
+
     // test de superposition de tower // n'est plus util car on dessine la zone de non construiction (donc la couleur change)
-    
+
     tower *tmpTower = liste;
     while(tmpTower != NULL){
         if(fabs(x-tmpTower->x)<=30 && fabs(y-tmpTower->y)<=30){
@@ -94,8 +94,8 @@ l_tower ajouterTower(l_tower liste, int* coins, int x, int y,int type, char** me
     if(error == 0){
         //lancement du bruitage
         Mix_PlayChannel(2, towerSound, 0);
-        
-        tower* nouvelElement = malloc(sizeof(tower));
+
+        tower* nouvelElement = (tower*)(malloc(sizeof(tower)));
         if(nouvelElement == NULL){
             fprintf(stderr, "Erreur allocation : TOWER\n");
             exit(EXIT_FAILURE);
@@ -167,7 +167,7 @@ void glisserTower(int x, int y, int type){
             glVertex2f( cos(2*M_PI*i/30)*(ray), sin(2*M_PI*i/30)*(ray));
         }
         glEnd();
-    
+
     //zone de construction impossible
     glColor4f(0.0, 0.0, 0.0, 0.1); //color + alpha
     glBegin(GL_POLYGON);
@@ -176,7 +176,7 @@ void glisserTower(int x, int y, int type){
         glVertex2f( cos(2*M_PI*i/30)*(30), sin(2*M_PI*i/30)*(30));
     }
     glEnd();
-    
+
     //tower
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 4);
@@ -233,7 +233,7 @@ l_tower supprimerTower(l_tower liste, l_tower aSuppr){
     /* Liste vide, il n'y a plus rien à supprimer */
     if(liste == NULL)
         return NULL;
-    
+
     /* Si l'élément en cours de traitement doit être supprimé */
     if(liste == aSuppr)
     {
@@ -258,7 +258,7 @@ l_tower supprimerTower(l_tower liste, l_tower aSuppr){
 
 /*--------------------------------------------------------------
             AFFICHAGE DE TOWER
- --------------------------------------------------------------*/   
+ --------------------------------------------------------------*/
 
 void afficherTower(l_tower liste, int ray, l_tower towerSelected){
     tower *tmp = liste;
@@ -268,7 +268,7 @@ void afficherTower(l_tower liste, int ray, l_tower towerSelected){
         }
         glMatrixMode(GL_MODELVIEW);
         glTranslatef(tmp->x,tmp->y,1);
-        
+
         //cercle d action, si on appui sur t
         if(ray == 1){
             glColor3ub(220, 250, 255);
@@ -279,7 +279,7 @@ void afficherTower(l_tower liste, int ray, l_tower towerSelected){
                 glVertex2f( cos(2*M_PI*i/30)*(tmp->rayon), sin(2*M_PI*i/30)*(tmp->rayon));
             }
             glEnd();
-            
+
             //zone de construction impossible
             glColor4f(0.0, 0.0, 0.0, 0.1); //color + alpha
             glBegin(GL_POLYGON);
@@ -289,7 +289,7 @@ void afficherTower(l_tower liste, int ray, l_tower towerSelected){
             }
             glEnd();
         }
-        
+
         if(tmp == towerSelected){
             int j;
             glColor4f(0.7, 0.0, 0.0, 0.3); //color + alpha
@@ -299,7 +299,7 @@ void afficherTower(l_tower liste, int ray, l_tower towerSelected){
             }
             glEnd();
         }
-        
+
         if(tmp->active == 0){
             glBindTexture(GL_TEXTURE_2D, 4);
             glColor4f(1, 1, 1, 0.2);
@@ -326,7 +326,7 @@ void afficherTower(l_tower liste, int ray, l_tower towerSelected){
             //BAS DROIT
             glTexCoord2f(0.25*(tmp->type), 0.1);      glVertex2f(20, -20);
             glEnd();
-            
+
         }
         glBindTexture(GL_TEXTURE_2D, 0);
         glLoadIdentity();
@@ -336,11 +336,11 @@ void afficherTower(l_tower liste, int ray, l_tower towerSelected){
 }
 
 /*--------------------------------------------------------------
-                GESTION DES TOWERS  
+                GESTION DES TOWERS
  --------------------------------------------------------------*/
 
 void gestionTower(l_tower listeTower, l_monster listeMonster){
-    
+
     tower *tmpTower = listeTower;
     monster *tmpMonster = listeMonster;
     monster *Cible;
@@ -377,7 +377,7 @@ void gestionTower(l_tower listeTower, l_monster listeMonster){
                     distance = sqrt(((tmpTower->x)-(tmpMonster->x))*((tmpTower->x)-(tmpMonster->x))+((tmpTower->y)-(tmpMonster->y))*((tmpTower->y)-(tmpMonster->y)));
                     //si la tower est de type 3 elle tir sur tout le monde en meme temps
                     if(tmpTower->type==3 && distance<tmpTower->rayon){
-                        
+
                         glBegin(GL_LINES);
                         glColor3f(0.0,1.0,0.0);
                         glVertex2f(tmpTower->x,tmpTower->y);
@@ -385,9 +385,9 @@ void gestionTower(l_tower listeTower, l_monster listeMonster){
                         glEnd();
                         glLoadIdentity();
                         tmpMonster->vie=(tmpMonster->vie)-(tmpTower->puissance*resistTower);
-                        
+
                     }
-                    
+
                     if(distance<distanceCible){
                         Cible = tmpMonster;
                         distanceCible=distance;
@@ -395,7 +395,7 @@ void gestionTower(l_tower listeTower, l_monster listeMonster){
                 }
                 tmpMonster = tmpMonster->next;
             }
-            
+
             //on lui ote de la vie s il est dans le rayon d action de la tower
             //sauf si la tower est de type 3 car on lui a deja ote de la vie
             if(distanceCible<(tmpTower->rayon) && tmpTower->type!=3){
@@ -410,7 +410,7 @@ void gestionTower(l_tower listeTower, l_monster listeMonster){
                 glVertex2f(Cible->x,Cible->y);
                 glEnd();
                 glLoadIdentity();
-                
+
             }
         }
         tmpTower = tmpTower->next;

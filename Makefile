@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -Wall  -g 
-LDFLAGS =  -lglut -lGL -lGLU -lm  -lSDL -lSDL_mixer -lSDL_image -lSDL_ttf 
+CFLAGS = -Wall  -g
+LDFLAGS =  -framework GLUT -framework OpenGL -lm  -framework SDL -framework SDL_mixer -framework SDL_image -framework SDL_ttf
 APP_BIN = itd
 
 SRC_PATH = src
@@ -18,7 +18,7 @@ $(APP_BIN): $(OBJ_FILES)
 	@mkdir -p $(BIN_PATH)
 	$(CC) -o $(BIN_PATH)/$(APP_BIN) $(OBJ_FILES) $(LDFLAGS)
 	@echo "--------------------------------------------------------------"
-	@echo "       Pour exécuter le programme taper : bin/$(APP_BIN)      "
+	@echo "       To start the program please write : bin/$(APP_BIN)     "
 	@echo "--------------------------------------------------------------"
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
@@ -28,11 +28,11 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 clean:
 	rm $(OBJ_FILES) $(BIN_PATH)/$(APP_BIN)
 	@echo "--------------------------------------------------------------"
-	@echo "             On clean le dossier bin & les objets             "
+	@echo "                 Clean bin folder and objects                 "
 	@echo "--------------------------------------------------------------"
 
 tar: clean
 	tar -pvczf pokimacTowerDefense.tar.gz ./*
 	@echo "------------------------------------------------------------------"
-	@echo "  Création d'un fichier tar.gz final : pokimacTowerDefense.tar.gz "
-	@echo "------------------------------------------------------------------" 
+	@echo "  Creation of a compressed version tar.gz : pokimacTowerDefense   "
+	@echo "------------------------------------------------------------------"

@@ -5,11 +5,11 @@
 
 #include <math.h>
 #include <SDL/SDL.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_mixer.h>
-#include <SDL/SDL_ttf.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <SDL_image/SDL_image.h>
+#include <SDL_mixer/SDL_mixer.h>
+#include <SDL_ttf/SDL_ttf.h>
 
 #include "monster.h"
 #include "tower.h"
@@ -63,7 +63,7 @@ GLuint* description(GLuint *textureId, int type){
         default:
             break;
     }
-    
+
     char valeurRay[25] = "Rayon : ";
     char valeurPui[25] = "Puissance : ";
     char valeurCad[25] = "Cadence : 0.";
@@ -78,13 +78,13 @@ GLuint* description(GLuint *textureId, int type){
     //printf("%s", valeurCons);
 
     //strcat(valeur," Cout : ");
-    
+
     TTF_Font *police = NULL;
     SDL_Surface *texte = NULL;
     SDL_Color couleurBlanche = {255, 255, 255};
     /* Chargement de la police */
     police = TTF_OpenFont("images/hoog0656.ttf", 12);
-    
+
     // Bind the texture object
     glEnable(GL_TEXTURE_2D);
     glBindTexture( GL_TEXTURE_2D, textureId[10]);
@@ -115,7 +115,7 @@ GLuint* description(GLuint *textureId, int type){
             break;
     }
 
-    
+
     // Edit the texture object's image data using the information SDL_Surface gives us
     glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, texte->w, texte->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, texte->pixels );
     glBegin(GL_QUADS);
@@ -129,7 +129,7 @@ GLuint* description(GLuint *textureId, int type){
     glTexCoord2f(1, 1);
     glVertex2f(0+texte->w, 100);
     glEnd();
-    
+
     //////////////
     /////RAYON////
     //////////////
@@ -148,7 +148,7 @@ GLuint* description(GLuint *textureId, int type){
     glTexCoord2f(1, 1);
     glVertex2f(0+texte->w, 80);
     glEnd();
-    
+
     //////////////////
     /////PUISSANCE////
     //////////////////
@@ -167,7 +167,7 @@ GLuint* description(GLuint *textureId, int type){
     glTexCoord2f(1, 1);
     glVertex2f(0+texte->w, 60);
     glEnd();
-    
+
     ////////////////
     /////CADENCE////
     ////////////////
@@ -186,7 +186,7 @@ GLuint* description(GLuint *textureId, int type){
     glTexCoord2f(1, 1);
     glVertex2f(texte->w, 40);
     glEnd();
-    
+
     /////////////
     /////Cout////
     /////////////
@@ -205,7 +205,7 @@ GLuint* description(GLuint *textureId, int type){
     glTexCoord2f(1, 1);
     glVertex2f(texte->w, 20);
     glEnd();
-    
+
     /////////////
     /////Construction////
     /////////////
@@ -224,15 +224,15 @@ GLuint* description(GLuint *textureId, int type){
     glTexCoord2f(1, 1);
     glVertex2f(texte->w, 0);
     glEnd();
-    
-    
-    
-    
+
+
+
+
     glBindTexture( GL_TEXTURE_2D, 0 );
     glDisable(GL_TEXTURE_2D);
     TTF_CloseFont(police);
     SDL_FreeSurface(texte);
-    
+
        return textureId;
 }
 
@@ -253,9 +253,9 @@ GLuint* descriptionTowerSelected(GLuint *textureId, l_tower towerSelected){
     sprintf(valeurCons+15, "%d", (int)towerSelected->timeConst);
     //printf("%s", valeurRay);
     //printf("%s", valeurCons);
-    
+
     //strcat(valeur," Cout : ");
-    
+
     TTF_Font *police = NULL;
     SDL_Surface *texte = NULL;
     SDL_Color couleurBlanche = {255, 255, 255};
@@ -263,7 +263,7 @@ GLuint* descriptionTowerSelected(GLuint *textureId, l_tower towerSelected){
     SDL_Color couleurVerte = {0, 250, 0};
     /* Chargement de la police */
     police = TTF_OpenFont("images/hoog0656.ttf", 12);
-    
+
     // Bind the texture object
     glEnable(GL_TEXTURE_2D);
     glBindTexture( GL_TEXTURE_2D, textureId[10]);
@@ -293,8 +293,8 @@ GLuint* descriptionTowerSelected(GLuint *textureId, l_tower towerSelected){
             texte = TTF_RenderText_Blended(police, "TYPE", couleurBlanche);
             break;
     }
-    
-    
+
+
     // Edit the texture object's image data using the information SDL_Surface gives us
     glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, texte->w, texte->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, texte->pixels );
     glBegin(GL_QUADS);
@@ -308,7 +308,7 @@ GLuint* descriptionTowerSelected(GLuint *textureId, l_tower towerSelected){
     glTexCoord2f(1, 1);
     glVertex2f(0+texte->w, 100);
     glEnd();
-    
+
 
     //////////////
     /////RAYON////
@@ -328,7 +328,7 @@ GLuint* descriptionTowerSelected(GLuint *textureId, l_tower towerSelected){
     glTexCoord2f(1, 1);
     glVertex2f(0+texte->w, 80);
     glEnd();
-    
+
     //////////////////
     /////PUISSANCE////
     //////////////////
@@ -347,7 +347,7 @@ GLuint* descriptionTowerSelected(GLuint *textureId, l_tower towerSelected){
     glTexCoord2f(1, 1);
     glVertex2f(0+texte->w, 60);
     glEnd();
-    
+
     ////////////////
     /////CADENCE////
     ////////////////
@@ -366,7 +366,7 @@ GLuint* descriptionTowerSelected(GLuint *textureId, l_tower towerSelected){
     glTexCoord2f(1, 1);
     glVertex2f(texte->w, 40);
     glEnd();
-    
+
     /////////////
     /////Cout////
     /////////////
@@ -385,7 +385,7 @@ GLuint* descriptionTowerSelected(GLuint *textureId, l_tower towerSelected){
     glTexCoord2f(1, 1);
     glVertex2f(texte->w, 20);
     glEnd();
-    
+
     /////////////
     /////Construction////
     /////////////
@@ -423,7 +423,7 @@ GLuint* descriptionTowerSelected(GLuint *textureId, l_tower towerSelected){
     glTexCoord2f(1, 1);
     glVertex2f(texte->w, -15);
     glEnd();
-    
+
     /////////////
     /////EVOLUER////
     /////////////
@@ -442,12 +442,12 @@ GLuint* descriptionTowerSelected(GLuint *textureId, l_tower towerSelected){
     glTexCoord2f(1, 1);
     glVertex2f(texte->w+65, -15);
     glEnd();
-    
+
     glBindTexture( GL_TEXTURE_2D, 0 );
     glDisable(GL_TEXTURE_2D);
     TTF_CloseFont(police);
     SDL_FreeSurface(texte);
-    
+
     return textureId;
 }
 
@@ -456,16 +456,16 @@ GLuint* descriptionTowerSelected(GLuint *textureId, l_tower towerSelected){
  ---------------------------------------------------------------*/
 
 GLuint* afficheCoins(GLuint *textureId, int coins){
-       
+
     char valeur[25] = "Coins : ";
     sprintf(valeur+8, "%d", coins);
-    
+
     TTF_Font *police = NULL;
     SDL_Surface *texte = NULL;
     SDL_Color couleurBlanche = {255, 255, 255};
     /* Chargement de la police */
     police = TTF_OpenFont("images/hoog0656.ttf", 20);
-    
+
     // Bind the texture object
     glEnable(GL_TEXTURE_2D);
     glBindTexture( GL_TEXTURE_2D, textureId[10]);
@@ -492,12 +492,12 @@ GLuint* afficheCoins(GLuint *textureId, int coins){
     glTexCoord2f(1, 1);
     glVertex2f(0+texte->w, 80);
     glEnd();
-    
+
     glBindTexture( GL_TEXTURE_2D, 0 );
     glDisable(GL_TEXTURE_2D);
     TTF_CloseFont(police);
     SDL_FreeSurface(texte);
-    
+
     return textureId;
 }
 
@@ -506,16 +506,16 @@ GLuint* afficheCoins(GLuint *textureId, int coins){
  ---------------------------------------------------------------*/
 
 GLuint* afficheVagues(GLuint *textureId, int vague){
-    
+
     char valeur[25] = "Vague : ";
     sprintf(valeur+8, "%d", vague);
-    
+
     TTF_Font *police = NULL;
     SDL_Surface *texte = NULL;
     SDL_Color couleurBlanche = {255, 255, 255};
     /* Chargement de la police */
     police = TTF_OpenFont("images/hoog0656.ttf", 20);
-    
+
     // Bind the texture object
     glEnable(GL_TEXTURE_2D);
     glBindTexture( GL_TEXTURE_2D, textureId[10]);
@@ -542,12 +542,12 @@ GLuint* afficheVagues(GLuint *textureId, int vague){
     glTexCoord2f(1, 1);
     glVertex2f(0+texte->w, 80);
     glEnd();
-    
+
     glBindTexture( GL_TEXTURE_2D, 0 );
     glDisable(GL_TEXTURE_2D);
     TTF_CloseFont(police);
     SDL_FreeSurface(texte);
-    
+
     return textureId;
 }
 
@@ -562,7 +562,7 @@ GLuint* afficheTexte(GLuint *textureId, int x, int y, char * Texte, int r, int g
     SDL_Color couleur = {r, g, b};
     /* Chargement de la police */
     police = TTF_OpenFont("images/hoog0656.ttf", size);
-    
+
     // Bind the texture object
     glEnable(GL_TEXTURE_2D);
     glBindTexture( GL_TEXTURE_2D, textureId[10]);
@@ -571,7 +571,7 @@ GLuint* afficheTexte(GLuint *textureId, int x, int y, char * Texte, int r, int g
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
     glLoadIdentity();
     glTranslatef(x,y,1);
-    
+
     /* Écriture du texte dans la SDL_Surface texte en mode Blended (optimal) */
     texte = TTF_RenderText_Blended(police, Texte, couleur);
     // Edit the texture object's image data using the information SDL_Surface gives us
@@ -586,12 +586,12 @@ GLuint* afficheTexte(GLuint *textureId, int x, int y, char * Texte, int r, int g
     glTexCoord2f(1, 1);
     glVertex2f(0+texte->w, 80);
     glEnd();
-    
+
     glBindTexture( GL_TEXTURE_2D, 0 );
     glDisable(GL_TEXTURE_2D);
     TTF_CloseFont(police);
     SDL_FreeSurface(texte);
-    
+
     return textureId;
 }
 
@@ -612,4 +612,3 @@ void afficheMessageErreur(void){
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-

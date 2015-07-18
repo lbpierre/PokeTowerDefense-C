@@ -2,7 +2,7 @@
 #define __CARTE_H__
 
 void openTextFile(char* fileName);
-l_node addCoordNoeud();
+l_node addCoordNoeud(char* fileName);
 
 int validationFichierItd(GLubyte* couleurChemin, GLubyte* couleurConstruct, GLubyte* couleurNoeud, GLubyte* couleurNoeudIn, GLubyte* couleurNoeudOut, char* fileName, char** nomFichierImage);
 int nombreDeLigneFichierITD(char* fileName);

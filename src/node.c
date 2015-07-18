@@ -5,11 +5,11 @@
 
 #include <math.h>
 #include <SDL/SDL.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_mixer.h>
-#include <SDL/SDL_ttf.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <SDL_image/SDL_image.h>
+#include <SDL_mixer/SDL_mixer.h>
+#include <SDL_ttf/SDL_ttf.h>
 
 #include "vague.h"
 #include "monster.h"
@@ -24,7 +24,7 @@
  --------------------------------------------------------------*/
 
 l_node ajouterNode(l_node liste, int x, int y){
-    node* nouvelElement = malloc(sizeof(node));
+    node* nouvelElement = (node*)(malloc(sizeof(node)));
     if(nouvelElement == NULL){
         fprintf(stderr, "Erreur allocation : NOEUD\n");
         exit(EXIT_FAILURE);

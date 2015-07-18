@@ -5,11 +5,11 @@
 
 #include <math.h>
 #include <SDL/SDL.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_mixer.h>
-#include <SDL/SDL_ttf.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <SDL_image/SDL_image.h>
+#include <SDL_mixer/SDL_mixer.h>
+#include <SDL_ttf/SDL_ttf.h>
 
 #include "menu.h"
 #include "monster.h"
@@ -45,7 +45,7 @@ void afficherMenuPause(int * pause){
         glEnd();
         glBindTexture(GL_TEXTURE_2D, 0);
         glDisable(GL_TEXTURE_2D);
-        
+
         }
 }
 
@@ -102,7 +102,7 @@ void afficherMenuStart(int * pause){
         glEnd();
         glBindTexture(GL_TEXTURE_2D, 0);
         glDisable(GL_TEXTURE_2D);
-        
+
     }
 }
 
@@ -128,12 +128,12 @@ void afficherMenuWin(int * pause){
         glEnd();
         glBindTexture(GL_TEXTURE_2D, 0);
         glDisable(GL_TEXTURE_2D);
-        
+
     }
 }
 
 /*--------------------------------------------------------------
-            AFFICHAGE DE L'IMAGE DE DÉFAITE    
+            AFFICHAGE DE L'IMAGE DE DÉFAITE
  --------------------------------------------------------------*/
 
 void afficherMenuLose(int * pause){
@@ -154,7 +154,7 @@ void afficherMenuLose(int * pause){
         glEnd();
         glBindTexture(GL_TEXTURE_2D, 0);
         glDisable(GL_TEXTURE_2D);
-        
+
     }
 }
 
@@ -163,7 +163,7 @@ void afficherMenuLose(int * pause){
  --------------------------------------------------------------*/
 
 void afficherMenu(int selected){
-    
+
     glEnable(GL_TEXTURE_2D);
     glColor3ub(255,255,255);
     glBindTexture(GL_TEXTURE_2D, 3);
@@ -200,7 +200,7 @@ void afficherMenu(int selected){
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_TEXTURE_2D);
     glLoadIdentity();
-    
+
     //tower2
     glTranslatef(761,776,1);
     glEnable(GL_TEXTURE_2D);
@@ -208,10 +208,10 @@ void afficherMenu(int selected){
     glBegin(GL_QUADS);
     if(selected == 2){
         glColor4f(1.0, 1.0, 1.0, 1.0); //color + alpha
-        
+
     }else{
         glColor4f(1.0, 1.0, 1.0, 0.5); //color + alpha
-        
+
     }
     glTexCoord2f(0.50, 0);          glVertex2f(20, 20);
     glTexCoord2f(0.25, 0);             glVertex2f(-20, 20);
@@ -221,7 +221,7 @@ void afficherMenu(int selected){
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_TEXTURE_2D);
     glLoadIdentity();
-    
+
     //tower3
     glTranslatef(725,743,1);
     glEnable(GL_TEXTURE_2D);
@@ -229,10 +229,10 @@ void afficherMenu(int selected){
     glBegin(GL_QUADS);
     if(selected == 3){
         glColor4f(1.0, 1.0, 1.0, 1.0); //color + alpha
-        
+
     }else{
         glColor4f(1.0, 1.0, 1.0, 0.5); //color + alpha
-        
+
     }
     glTexCoord2f(0.75, 0);          glVertex2f(20, 20);
     glTexCoord2f(0.50, 0);             glVertex2f(-20, 20);
@@ -242,7 +242,7 @@ void afficherMenu(int selected){
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_TEXTURE_2D);
     glLoadIdentity();
-    
+
     //tower4
     glTranslatef(759,743,1);
     glEnable(GL_TEXTURE_2D);
@@ -250,10 +250,10 @@ void afficherMenu(int selected){
     glBegin(GL_QUADS);
     if(selected == 4){
         glColor4f(1.0, 1.0, 1.0, 1.0); //color + alpha
-        
+
     }else{
         glColor4f(1.0, 1.0, 1.0, 0.5); //color + alpha
-        
+
     }
     glTexCoord2f(1, 0);          glVertex2f(20, 20);
     glTexCoord2f(0.75, 0);             glVertex2f(-20, 20);
@@ -263,7 +263,7 @@ void afficherMenu(int selected){
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_TEXTURE_2D);
     glLoadIdentity();
- 
+
 }
 
 /*--------------------------------------------------------------
@@ -290,4 +290,3 @@ void afficherMouse(int xMove, int yMove, int PIXEL_HEIGHT){
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_TEXTURE_2D);
 }
-
