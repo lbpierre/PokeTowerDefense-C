@@ -152,16 +152,16 @@ You start the game by typing bin/itd the source of PokimacTowerDefense folder, o
 
 ###How the maps are working
 
-![map draw](http://s1.postimg.org/lahvoq5rh/Screenshot_2015_07_18_20_00_05.png)
+![map draw](http://imgbin.org/images/24815.png)
 
 
 An example of a mapfile that I created using pokemon sprites with drawable zones in pink :
 
-![enter image description here](http://s17.postimg.org/bjjtc3gkt/map2.jpg)
+![enter image description here](http://imgbin.org/images/24814.jpg)
 
 ###Characters movement
 
-![mouvement du perso](http://s1.postimg.org/u446s33ce/Screenshot_2015_07_18_20_00_13.jpg)
+![mouvement du perso](http://imgbin.org/images/24816.png)
 
 ###Sprites
 
